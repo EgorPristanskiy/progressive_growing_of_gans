@@ -15,11 +15,11 @@ import tensorflow as tf
 import scipy.ndimage
 import scipy.misc
 
-import config
-import misc
-import tfutil
-import train
-import dataset
+import .config.
+import .misc
+import .tfutil
+import .train
+import .dataset
 
 #----------------------------------------------------------------------------
 # Generate random images or image grids using a previously trained network.

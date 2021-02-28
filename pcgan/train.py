@@ -10,10 +10,10 @@ import time
 import numpy as np
 import tensorflow as tf
 
-import config
-import tfutil
-import dataset
-import misc
+import .config
+import .tfutil
+import .dataset
+import .misc
 
 #----------------------------------------------------------------------------
 # Choose the size and contents of the image snapshot grids that are exported
@@ -275,14 +275,14 @@ def train_progressive_gan(
 # Main entry point.
 # Calls the function indicated in config.py.
 
-if __name__ == "__main__":
-    misc.init_output_logging()
-    np.random.seed(config.random_seed)
-    print('Initializing TensorFlow...')
-    os.environ.update(config.env)
-    tfutil.init_tf(config.tf_config)
-    print('Running %s()...' % config.train['func'])
-    tfutil.call_func_by_name(**config.train)
-    print('Exiting...')
+# if __name__ == "__main__":
+#     misc.init_output_logging()
+#     np.random.seed(config.random_seed)
+#     print('Initializing TensorFlow...')
+#     os.environ.update(config.env)
+#     tfutil.init_tf(config.tf_config)
+#     print('Running %s()...' % config.train['func'])
+#     tfutil.call_func_by_name(**config.train)
+#     print('Exiting...')
 
 #----------------------------------------------------------------------------
