@@ -10,7 +10,7 @@ import glob
 import numpy as np
 import tensorflow as tf
 
-import .tfutil
+import tfutil
 
 #----------------------------------------------------------------------------
 # Parse individual image from a tfrecords file.
