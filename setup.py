@@ -1,5 +1,5 @@
 from setuptools import setup
-from pip.req import parse_requirements
+from pip_utils.req import parse_requirements
 
 # TODO solve problem with author
 setup(
