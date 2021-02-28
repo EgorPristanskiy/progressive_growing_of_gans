@@ -9,8 +9,9 @@ import pickle
 import inspect
 import numpy as np
 
-import tfutil
-import networks
+# TODO
+from .tfutil import *
+from .networks import *
 
 #----------------------------------------------------------------------------
 # Custom unpickler that is able to load network pickles produced by
@@ -22,11 +23,11 @@ class LegacyUnpickler(pickle.Unpickler):
 
     def find_class(self, module, name):
         if module == 'network' and name == 'Network':
-            return tfutil.Network
+            return Network
         return super().find_class(module, name)
 
 #----------------------------------------------------------------------------
-# Import handler for tfutil.Network that silently converts networks produced
+# Import handler for Network that silently converts networks produced
 # by the old Theano implementation to a suitable format.
 
 theano_gan_remap = {
@@ -93,10 +94,10 @@ def patch_theano_gan(state):
         'static_kwargs':    spec,
         'variables':        vars}
 
-tfutil.network_import_handlers.append(patch_theano_gan)
+network_import_handlers.append(patch_theano_gan)
 
 #----------------------------------------------------------------------------
-# Import handler for tfutil.Network that ignores unsupported/deprecated
+# Import handler for Network that ignores unsupported/deprecated
 # networks produced by older versions of the code.
 
 def ignore_unknown_theano_network(state):
@@ -112,6 +113,6 @@ def ignore_unknown_theano_network(state):
         'static_kwargs':    {},
         'variables':        []}
 
-tfutil.network_import_handlers.append(ignore_unknown_theano_network)
+network_import_handlers.append(ignore_unknown_theano_network)
 
 #----------------------------------------------------------------------------

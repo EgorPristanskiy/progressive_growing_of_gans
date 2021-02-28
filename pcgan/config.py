@@ -17,7 +17,6 @@ class EasyDict(dict):
 
 #----------------------------------------------------------------------------
 # Paths.
-
 data_dir = 'datasets'
 result_dir = 'results'
 

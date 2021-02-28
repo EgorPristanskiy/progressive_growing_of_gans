@@ -10,7 +10,8 @@ import glob
 import numpy as np
 import tensorflow as tf
 
-import tfutil
+# TODO
+from  .tfutil import *
 
 #----------------------------------------------------------------------------
 # Parse individual image from a tfrecords file.
@@ -112,7 +113,7 @@ class TFRecordDataset:
             self._tf_minibatch_in = tf.placeholder(tf.int64, name='minibatch_in', shape=[])
             tf_labels_init = tf.zeros(self._np_labels.shape, self._np_labels.dtype)
             self._tf_labels_var = tf.Variable(tf_labels_init, name='labels_var')
-            tfutil.set_vars({self._tf_labels_var: self._np_labels})
+            set_vars({self._tf_labels_var: self._np_labels})
             self._tf_labels_dataset = tf.data.Dataset.from_tensor_slices(self._tf_labels_var)
             for tfr_file, tfr_shape, tfr_lod in zip(tfr_files, tfr_shapes, tfr_lods):
                 if tfr_lod < 0:
@@ -150,7 +151,7 @@ class TFRecordDataset:
         self.configure(minibatch_size, lod)
         if self._tf_minibatch_np is None:
             self._tf_minibatch_np = self.get_minibatch_tf()
-        return tfutil.run(self._tf_minibatch_np)
+        return run(self._tf_minibatch_np)
 
     # Get random labels as TensorFlow expression.
     def get_random_labels_tf(self, minibatch_size): # => labels
@@ -191,7 +192,7 @@ class SyntheticDataset:
     def configure(self, minibatch_size, lod=0):
         lod = int(np.floor(lod))
         assert minibatch_size >= 1 and lod >= 0 and lod <= self.resolution_log2
-        tfutil.set_vars({self._tf_minibatch_var: minibatch_size, self._tf_lod_var: lod})
+        set_vars({self._tf_minibatch_var: minibatch_size, self._tf_lod_var: lod})
 
     def get_minibatch_tf(self): # => images, labels
         with tf.name_scope('SyntheticDataset'):
@@ -205,7 +206,7 @@ class SyntheticDataset:
         self.configure(minibatch_size, lod)
         if self._tf_minibatch_np is None:
             self._tf_minibatch_np = self.get_minibatch_tf()
-        return tfutil.run(self._tf_minibatch_np)
+        return run(self._tf_minibatch_np)
 
     def get_random_labels_tf(self, minibatch_size): # => labels
         with tf.name_scope('SyntheticDataset'):
@@ -215,7 +216,7 @@ class SyntheticDataset:
         self.configure(minibatch_size)
         if self._tf_labels_np is None:
             self._tf_labels_np = self.get_random_labels_tf()
-        return tfutil.run(self._tf_labels_np)
+        return run(self._tf_labels_np)
 
     def _generate_images(self, minibatch, lod, shape): # to be overridden by subclasses
         return tf.zeros([minibatch] + shape, self.dtype)
@@ -232,7 +233,7 @@ def load_dataset(class_name='dataset.TFRecordDataset', data_dir=None, verbose=Fa
         adjusted_kwargs['tfrecord_dir'] = os.path.join(data_dir, adjusted_kwargs['tfrecord_dir'])
     if verbose:
         print('Streaming data using %s...' % class_name)
-    dataset = tfutil.import_obj(class_name)(**adjusted_kwargs)
+    dataset = import_obj(class_name)(**adjusted_kwargs)
     if verbose:
         print('Dataset shape =', np.int32(dataset.shape).tolist())
         print('Dynamic range =', dataset.dynamic_range)
